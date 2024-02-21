@@ -1,7 +1,7 @@
 #ifdef ONLINE_JUDGE
     #define debug(x...)
 #else
-    #include "/home/william/misc/debug.h"
+    #include "../../debug.h"
 #endif
 
 #include <bits/stdc++.h>
