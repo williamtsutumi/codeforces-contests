@@ -23,20 +23,26 @@ int main()
         int n, d; cin >> n >> d;
         string in; cin >> in;
 
-        int idx = -1;
-        for(int i=0; i<n; i++){
-            if (in[i] -'0' < d){
-                idx = i;
-                break;
+        int idx = n;
+        if (in[0]-'0' < d){
+            idx = 0;
+        }
+        else{
+            for(int i=0; i<n-1; i++){
+                char c = in[i]-'0';
+                if (c >= d && in[i+1]-'0' < d){
+                    idx = i+1;
+                    break;
+                }
             }
         }
-        for(int i=0; i<in.size(); i++){
-            if (d == in[i]-'0' && i == 0) cout << d;
-            else if (d < in[i]-'0' && i == n-1) cout << d;
-            else if (i == idx) cout << d;
-            cout << in[i];
+
+        for(int i=0; i<idx; i++){
+            cout << in[i] -'0';
         }
-        if (d == 0) cout << d;
+        cout << d;
+        for(int i=idx; i<n; i++) cout << in[i] -'0';
+
         cout << '\n';
     }
 

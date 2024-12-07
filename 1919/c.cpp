@@ -1,7 +1,7 @@
 #ifdef ONLINE_JUDGE
     #define debug(x...)
 #else
-    #include "../../debug.h"
+    #include "../debug.h"
 #endif
 
 #include <bits/stdc++.h>
@@ -18,40 +18,69 @@ typedef long long ll;
 typedef complex<ll> P;
 const ll INF = 1e9 + 7;
 
+int lis(vector<int>& arr)
+{
+    vector<int> ans;
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {
+        auto it = lower_bound(ans.begin(), ans.end(), arr[i]);
+        if (it == ans.end()) {
+            ans.push_back(arr[i]);
+        }
+        else {
+            *it = arr[i];
+        }
+    }
+    return ans.size();
+}
+
+
 int main()
 {
     FFIO;
     int r; cin >> r;
     while(r--){
         int n; cin >> n;
-
         vector<int> in(n);
         for(int i=0; i<n; i++) cin >> in[i];
+        if (n <= 2){
+            cout << 0 << '\n';
+            continue;
+        }
 
-        vector<int> sizes;
-        int cnt = 1;
-        ll out = 0;
-        for(int i=0;i<n-1;i++){
-            if (in[i] >= in[i+1]){
-                sizes.push_back(cnt);
-                cnt = 0;
+
+        int l = INT_MAX;
+        int r = INT_MAX;
+        int out = 0;
+        for(int i=0; i<n; i++){
+            int v = in[i];
+            if (v <= l && v <= r){
+                if (l > r) r = v;
+                else l = v;
+            }
+            else if (v <= l){
+                l = v;
+            }
+            else if (v <= r){
+                r = v;
             }
             else{
-                cnt++;
+                out++;
+                if (l > r) r = v;
+                else l = v;
             }
         }
-        sizes.push_back(cnt);
-
-        debug(sizes);
-        int mx = INT_MIN;
-        for(int i=0; i<sizes.size();i++){
-            out += sizes[i];
-            mx = max(mx, sizes[i]);
-        }
-
-        out = out - ceil(mx/2.0);
-        cout << max((long long)0, out) << endl;
+        cout << out << '\n';
     }
 
     return 0;
 }
+/*
+ * 8 2 3 1 1 7 4 3
+ * 8 3
+ * 2 1 1 7 4 3
+ *
+ * 8 2 3 4 1 7 4 3
+ * 8 3 1 7
+ * 2 4 4 3
+ */

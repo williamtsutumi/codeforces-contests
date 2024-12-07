@@ -21,34 +21,26 @@ int main()
     int r; cin >> r;
     while(r--){
         int n; cin >> n;
-        vector<int> in(n);
-        for(int i=0; i<n; i++) cin >> in[i];
+        vector<pair<int,int>> in(n);
+        for(int i=0; i<n; i++){
+            int v; cin >> v;
+            in[i] = {v, i};
+        }
 
-        int start = 0;
-        while(start < n && in[start] == 0) start++;
+        set<int> zeros;
+        for(int i=0; i<n; i++) if (in[i].first == 0) zeros.insert(i);
 
-        vector<int> aux;
+        sort(in.begin(), in.end(), greater());
+
         ll out = 0;
-        bool found = false;
-        for(int i=start; i<=n; i++){
-            if (found && (i == n || in[i] > 0)){
-                found = false;
-                int idx = 0;
-                sort(aux.begin(), aux.end());
-                while(aux[idx] == 0){
-                    out += aux[aux.size()-1-idx];
-                    idx++;
-                }
-                aux.erase(next(aux.begin(), aux.size()-1-idx), aux.end());
-                if (idx == 0) aux.erase(aux.begin());
-                else aux.erase(aux.begin(), next(aux.begin(), idx-1));
-                debug(aux);
-
+        for(int i=0; i<n; i++){
+            int idx = in[i].second;
+            auto lb = zeros.upper_bound(idx);
+            if (lb != zeros.end() && *lb > idx){
+                zeros.erase(lb);
+                out += in[i].first;
+                if (zeros.size() == 0) break;
             }
-            if (i == n) break;
-
-            if (in[i] == 0) found = true;
-            aux.push_back(in[i]);
         }
         cout << out << '\n';
     }

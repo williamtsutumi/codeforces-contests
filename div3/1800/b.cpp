@@ -24,31 +24,22 @@ int main()
         string in; cin >> in;
 
         map<int,int> mp;
-        for(int i=0; i<n; i++){
-            mp[in[i]]++;
-        }
-        ll sum = 0;
-        for(auto [k,v]:mp){
-            sum += min(mp[tolower(k)], mp[toupper(k)]);
-        }
-        sum /= 2;
+        for(int i=0; i<n; i++) mp[in[i]]++;
 
-        ll out = 0;
-        
-        for(auto [key,v]: mp){
-            char low = tolower(key);
-            char up = toupper(key);
-            int diff = abs(mp[low] - mp[up]);
-            diff /= 2;
-            if (diff <= k){
-                mp[low] = 0;
-                mp[up] = 0;
-                out += diff;
-                k -= diff;
-            }
+        int out = 0;
+        for(char c='a'; c<='z'; c++){
+            int v = min(mp[c], mp[toupper(c)]);
+
+            out += v;
+            mp[c] -= v;
+            mp[toupper(c)] -= v;
         }
-        sum += out;
-        cout << sum << '\n';
+
+        int plus = 0;
+        for(char c='a'; c<='z'; c++){
+            plus += (mp[c] + mp[toupper(c)]) / 2;
+        }
+        cout << out + min(plus, k) << '\n';
     }
 
     return 0;
