@@ -1,0 +1,8 @@
+xor == (somatoria / n)
+    == (xor + vai_ums) / n
+n * xor = xor + vai_ums
+n * xor + xor = vai_ums
+xor * (n - 1) == vai_ums
+n - 1 == vai_ums / xor
+      == (soma - xor) / xor
+      == soma / xor
